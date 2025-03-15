@@ -1,22 +1,35 @@
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { useState } from "react";
 
 export default function App() {
-  const addTextHandler = (text) => {
-    console.log(text);
+  const [enteredGoal, setenteredGoal] = useState("");
+  const [courseGoals, setcourseGoals] = useState([]);
+
+  const goalInputHandler = (text) => {
+    setenteredGoal(text);
   };
 
+  const addGoalHandler = () => {
+    setcourseGoals((currentGoals) => [...currentGoals, enteredGoal]);
+
+    console.log(courseGoals);
+  };
   return (
     <View style={styles.appContainer}>
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.input}
           placeholder="Your Course goals"
-          onChangeText={addTextHandler}
+          onChangeText={goalInputHandler}
         />
-        <Button title="add Goals" />
+        <Button title="add Goals" onPress={addGoalHandler} />
       </View>
       <View style={styles.listContainer}>
-        <Text>List of Goals</Text>
+        {courseGoals.map((goal) => (
+          <View style={styles.goal} key={goal}>
+            <Text style={styles.goalText}>{goal}</Text>
+          </View>
+        ))}
       </View>
     </View>
   );
@@ -30,6 +43,7 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignContent: "center",
   },
   input: {
     width: "78%",
@@ -43,6 +57,15 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     paddingTop: 20,
     justifyContent: "center",
-    alignItems: "center",
+  },
+  goal: {
+    padding: 10,
+    marginVertical: 5,
+    backgroundColor: "purple",
+    borderRadius: 5,
+  },
+  goalText: {
+    color: "white",
+    textTransform: "uppercase",
   },
 });

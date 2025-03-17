@@ -6,21 +6,36 @@ import GoalInput from "./components/GoalInput";
 export default function App() {
 	const [courseGoals, setcourseGoals] = useState([]);
 
-	const addGoalHandler = () => {
+	const addGoalHandler = (enteredGoalText) => {
 		setcourseGoals((currentGoals) => [
 			...currentGoals,
-			{ text: enteredGoal, id: Math.random().toString() },
+			{ text: enteredGoalText, id: Math.random().toString() },
 		]);
+	};
+
+	const deleteGoalHandler = (id) => {
+		setcourseGoals((currentGoals) => {
+			return currentGoals.filter((goal) => goal.id !== id);
+		});
 	};
 	return (
 		<View style={styles.appContainer}>
 			{/* this is the Goal Input handler */}
 			<GoalInput onAddGoal={addGoalHandler} />
-			<FlatList
-				data={courseGoals}
-				renderItem={(itemData) => <GoalList text={itemData.item.text} />}
-				keyExtractor={(item) => item.id}
-			/>
+
+			<View style={styles.listContainer}>
+				<FlatList
+					data={courseGoals}
+					renderItem={(itemData) => (
+						<GoalList
+							onDelete={deleteGoalHandler}
+							text={itemData.item.text}
+							id={itemData.item.id}
+						/>
+					)}
+					keyExtractor={(item) => item.id}
+				/>
+			</View>
 		</View>
 	);
 }
@@ -29,5 +44,11 @@ const styles = StyleSheet.create({
 	appContainer: {
 		padding: 20,
 		paddingTop: 50,
+	},
+	listContainer: {
+		marginTop: 20,
+		borderTopColor: "gray",
+		borderTopWidth: 1,
+		height: "90%",
 	},
 });

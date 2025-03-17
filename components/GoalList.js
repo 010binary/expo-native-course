@@ -1,43 +1,43 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet } from "react-native";
+import {
+	View,
+	Text,
+	StyleSheet,
+	TouchableOpacity,
+	Pressable,
+} from "react-native";
 
 const GoalList = (props) => {
-  console.log(props);
-  return (
-    <View style={styles.listContainer}>
-      <View style={styles.goal}>
-        <Text style={styles.goalText}>{props.text}</Text>
-      </View>
-    </View>
-  );
+	return (
+		<>
+			<View style={styles.goal}>
+				<Pressable
+					android_ripple={{ color: "green" }}
+					onPress={props.onDelete.bind(this, props.id)}
+				>
+					<Text style={styles.goalText}>{props.text}</Text>
+				</Pressable>
+			</View>
+		</>
+	);
 };
 
 GoalList.propTypes = {
-  text: PropTypes.string,
+	text: PropTypes.string,
 };
 
 const styles = StyleSheet.create({
-  listContainer: {
-    marginTop: 20,
-    borderTopColor: "gray",
-    borderTopWidth: 1,
-    paddingBottom: 100,
-    height: "80%",
-  },
-  goalContainter: {
-    height: "80%",
-  },
-  goal: {
-    padding: 10,
-    marginVertical: 5,
-    backgroundColor: "purple",
-    borderRadius: 5,
-  },
-  goalText: {
-    color: "white",
-    textTransform: "uppercase",
-  },
+	goal: {
+		marginVertical: 5,
+		backgroundColor: "purple",
+		borderRadius: 5,
+	},
+	goalText: {
+		color: "white",
+		padding: 10,
+		textTransform: "uppercase",
+	},
 });
 
 export default GoalList;

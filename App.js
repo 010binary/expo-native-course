@@ -1,16 +1,23 @@
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, Button } from "react-native";
 import { useState } from "react";
 import GoalList from "./components/GoalList";
 import GoalInput from "./components/GoalInput";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
 	const [courseGoals, setcourseGoals] = useState([]);
+	const [isModelVisible, setIsModelVisible] = useState(false);
+
+	const closeModal = () => {
+		setIsModelVisible(false);
+	};
 
 	const addGoalHandler = (enteredGoalText) => {
 		setcourseGoals((currentGoals) => [
 			...currentGoals,
 			{ text: enteredGoalText, id: Math.random().toString() },
 		]);
+		closeModal();
 	};
 
 	const deleteGoalHandler = (id) => {
@@ -18,25 +25,39 @@ export default function App() {
 			return currentGoals.filter((goal) => goal.id !== id);
 		});
 	};
-	return (
-		<View style={styles.appContainer}>
-			{/* this is the Goal Input handler */}
-			<GoalInput onAddGoal={addGoalHandler} />
 
-			<View style={styles.listContainer}>
-				<FlatList
-					data={courseGoals}
-					renderItem={(itemData) => (
-						<GoalList
-							onDelete={deleteGoalHandler}
-							text={itemData.item.text}
-							id={itemData.item.id}
-						/>
-					)}
-					keyExtractor={(item) => item.id}
+	return (
+		<>
+			<StatusBar style="light" />
+			<View style={styles.appContainer}>
+				<View>
+					<Button
+						title="Add New Goal"
+						onPress={() => setIsModelVisible(true)}
+					/>
+				</View>
+
+				{/* this is the Goal Input handler */}
+				<GoalInput
+					visible={isModelVisible}
+					onAddGoal={addGoalHandler}
+					onClose={closeModal}
 				/>
+				<View style={styles.listContainer}>
+					<FlatList
+						data={courseGoals}
+						renderItem={(itemData) => (
+							<GoalList
+								onDelete={deleteGoalHandler}
+								text={itemData.item.text}
+								id={itemData.item.id}
+							/>
+						)}
+						keyExtractor={(item) => item.id}
+					/>
+				</View>
 			</View>
-		</View>
+		</>
 	);
 }
 

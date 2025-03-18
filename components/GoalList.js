@@ -1,12 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {
-	View,
-	Text,
-	StyleSheet,
-	TouchableOpacity,
-	Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 
 const GoalList = (props) => {
 	return (
